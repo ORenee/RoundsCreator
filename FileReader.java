@@ -39,8 +39,10 @@ public class FileReader {
 
                 Couple couple = createCouple(attributes);
 
-                // adding book into ArrayList
+                // adding couple into ArrayList and count how many couples a person is in
+                IndividualTracker.trackCouple(couple, couples.size());
                 couples.add(couple);
+
 
                 // read next line before looping
                 // if end of file reached, line would be null

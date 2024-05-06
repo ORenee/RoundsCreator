@@ -13,9 +13,11 @@ public class Round {
     Dance dance3;
 
     int maxOnfloor;
+    int minOnFloor;
 
-    Round(int maxOnfloor, Style style){
-        this.maxOnfloor = maxOnfloor;
+    Round(Style style){
+        maxOnfloor = CreateRounds.MAX_ON_FLOOR;
+        minOnFloor = CreateRounds.SOFT_MAX;
         dance1Dancers = new ArrayList<>();
         dance2Dancers = new ArrayList<>();
         dance3Dancers = new ArrayList<>();
@@ -67,13 +69,13 @@ public class Round {
         return false;
     }
 
-    public boolean addCouple(Couple couple, Style style){
+    public boolean addCouple(Couple couple, Style style, int priority){
 
         if(!style.equals(this.style)){
             return false;
         }
 
-        // check if dances are full. If full, return false. adding failed
+        // check if dances are full. If full, adding fails
         if(isFullForDances(couple.getDances())){
             return false;
         }
