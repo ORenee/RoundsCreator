@@ -4,11 +4,13 @@ public class Couple {
     private String lead;
     private String follow;
     private List<Dance> dances;
+    private int id;
 
-    Couple(String lead, String follow, List<Dance> dances) {
+    Couple(String lead, String follow, List<Dance> dances, int id) {
         this.lead = lead;
         this.follow = follow;
         this.dances = dances;
+        this.id = id;
     };
 
     public String getLead(){
@@ -21,6 +23,10 @@ public class Couple {
 
     public List<Dance> getDances(){
         return dances;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public List<String> getDancers(){

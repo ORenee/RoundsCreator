@@ -1,10 +1,6 @@
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class CreateRounds {
@@ -14,21 +10,28 @@ public class CreateRounds {
 
     // specifies how many couples can be on the floor at once
     public static final int MAX_ON_FLOOR = 4;
-    // specifies the minimum number of couples on the floor. Must be less than max
-    public static final int SOFT_MAX = 2;
+    // specifies the minimum number of couples on the floor. Must be less than or equal to max
+    public static int SOFT_MAX = 3;
     //!! if min and max are the same number, not dancing consecutive rounds is not guaranteed !!
+
+    public static final boolean BALANCED_HEATS = false;
 
     // check for dancing back-to-back rounds
     private static final boolean CAN_DANCE_CONSECUTIVE_ROUNDS = false;
 
-    public static List<Round> getRounds(){
-        createRounds();
+    public static List<Round> getRounds(boolean redoRounds){
+        // only run algo again if it hasn't been run before or the user wants to redo it
+        if(redoRounds || rounds == null){
+            createRounds();
+        }
         return rounds;
     }
 
     // -- PRINT RESULTS --
-    public static void printRounds(){
-        createRounds();
+    public static void printRounds(boolean redoRounds){
+        if(redoRounds || rounds == null){
+            createRounds();
+        }
 
         try {
             CSVFileWriter.createOutput(rounds);
@@ -38,6 +41,7 @@ public class CreateRounds {
 
 
         for (int i = 1; i <= rounds.size(); ++i) {
+
             System.out.println("Round " + i);
             rounds.get(i - 1).print();
         }
@@ -54,18 +58,14 @@ public class CreateRounds {
     }
 
     public static void createRounds() {
-        // read couples from csv
-        List<Couple> couples = FileReader.readCouplesFromCSV("partners.csv");
-
-        //TODO: couples need to have unique IDs so that this method can be calld for just
-        // smooth or rhythm dances. That way they will be better organized within the types of dances
-        // someone is doing
-        couples = IndividualTracker.sortCouplesByOccurances(couples);
-
-        for(Couple c : couples){
-            c.print();
+        if(BALANCED_HEATS){
+            // if balanced, soft max is always what user inputed + 1
+            // because average will be one less than what you'd think
+            SOFT_MAX = SOFT_MAX + 1;
         }
 
+        // read couples from csv
+        List<Couple> couples = FileReader.readCouplesFromCSV("partners.csv");
 
         rounds = new ArrayList<>();
 
@@ -77,11 +77,23 @@ public class CreateRounds {
         // get all the couples dancing rhythm
         List<Couple> rhythmCouples = couples;
         rhythmCouples.removeIf(x -> (!x.dancesRhythm()));
-        //rhythmCouples = rhythmCouples.subList(0, 4);
+
+        rhythmCouples = IndividualTracker.sortCouplesByOccurances(rhythmCouples);
 
         for (Couple couple : rhythmCouples) {
-            addCouple(couple, findRoundNumber(couple), 0);
+            if(BALANCED_HEATS){
+                // prioritizes balancing the heats. May result in less than optimal number of couples on the floor
+                // add to the round with the least amount of couples in it
+                Round min = rounds.stream().filter(x -> x.style == Style.RHYTHM)
+                        .min(Comparator.comparingDouble(Round::getLeastOnFloor)).orElse(null); // will never be null
+                addCouple(couple, rounds.indexOf(min), 0);
+            } else{
+                // prioritizing number of couples on the floor. May result in heats with only one couple
+                // fills rounds sequentially
+                addCouple(couple, findRoundNumber(couple), 0);
+            }
         }
+
 
         //---- CREATE SMOOTH ROUNDS ----
 
@@ -91,15 +103,55 @@ public class CreateRounds {
         // get all the couples dancing rhythm
         List<Couple> smoothCouples = couples;
         smoothCouples.removeIf(x -> (!x.dancesSmooth()));
-        //smoothCouples = smoothCouples.subList(0, 4);
+
+        smoothCouples = IndividualTracker.sortCouplesByOccurances(smoothCouples);
 
         for (Couple couple : smoothCouples) {
-            addCouple(couple, findRoundNumber(couple), 0);
+            if(BALANCED_HEATS){
+                // prioritizes balancing the heats. May result in less than optimal number of couples on the floor
+                // add to the round with the least amount of couples in it
+                Round min = rounds.stream().filter(x -> x.style == Style.RHYTHM)
+                        .min(Comparator.comparingDouble(Round::getLeastOnFloor)).orElse(null); // will never be null
+                addCouple(couple, rounds.indexOf(min), 0);
+            } else{
+                // prioritizing number of couples on the floor. May result in heats with only one couple
+                // fills rounds sequentially
+                addCouple(couple, findRoundNumber(couple), 0);
+            }
+        }
+
+
+        //--- Remove single couples and heats with no dancers ----
+
+        for (int i = rounds.size(); i > 0; --i) {
+            Round current = rounds.get(i - 1);
+            // TODO: create indicator that a break is required if a couple is moved to a previous round
+            //  or if an empty round is deleted and it is not at the end (should never happen at the end but oh well)
+
+            if(current.isEmpty()){
+                rounds.remove(current);
+            }
+
+            // if a round has dances where there is 1 person on the floor,
+            // add this round to the previous r
+            if(current.getLeastOnFloor() == 1){
+                // the first round should almost never have this problem.
+                // if it does, that means only one couple is dancing this
+                // style so leave it as it is
+                if(i > 1 && rounds.get(i-2).style == current.style){
+                    // add this round to previous round
+                    Round result = rounds.get(i - 2).addToRoundWhereOnlyOneCouple(current);
+                    if(result != null){
+                        rounds.set(rounds.indexOf(current), result);
+                    }
+                }
+            }
+
+            current.removeEmptyDances();
         }
 
     }
 
-    //TODO: if someone is just doing the first dance in a round, they can dance in the next round.
 
     // priority is if these dancers need to be added to this round. 1 is high priority 0 is low
     public static void addCouple(Couple couple, int roundNumber, int priority) {
@@ -143,7 +195,7 @@ public class CreateRounds {
         // need to find the first round that is not full
         int roundNumber = 0;
         for (int i = 0; i < rounds.size(); ++i) {
-            if (rounds.get(i).style.equals(currentStyle) && !rounds.get(i).isFullForDances(couple.getDances())) {
+            if (rounds.get(i).style.equals(currentStyle) && !rounds.get(i).isFullForDances(couple.getDances(), false)) {
                 roundNumber = i;
                 break;
             }
@@ -151,59 +203,6 @@ public class CreateRounds {
         return roundNumber;
     }
 
-//    public List<Couple> frequencyBasedSort(List<Couple> couples, int k) {
-//
-//        // create hash on number times a dancer appears
-//        List<Couple>[] bucket = new List[couples.size() + 1];
-//        Map<Couple, Pair<Integer, Integer>> freqMap = new HashMap<>();
-//        for (Couple n : couples) {
-//            Pair<Integer, Integer> curCount = freqMap.get(n);
-//            if(curCount != null){
-//
-//                freqMap.put(n, freqMap.getOrDefault(n, 0) + 1);
-//            }
-//
-//        }
-//        for (String key : freqMap.keySet()) {
-//            int frequency = freqMap.get(key);
-//            if (bucket[frequency] == null) {
-//                bucket[frequency] = new ArrayList<>();
-//            }
-//            bucket[frequency].add(key);
-//        }
-//
-//        //sort list
-//        List<Couple> res = new ArrayList<>();
-//        for (int i = bucket.length - 1; i >= 0; i--) {
-//            if (bucket[i] != null) {
-//                res.addAll(bucket[i]);
-//            }
-//        }
-//        return res;
-//    }
-//
-//    public List<Couple> frequencyBasedSorts(List<Couple> couples, int k) {
-//
-//        List<Couple>[] bucket = new List[couples.size() + 1];
-//        Map<Couple, Integer> freqMap = new HashMap<>();
-//        for (Couple n : couples) {
-//            freqMap.put(n, freqMap.getOrDefault(n, 0) + 1);
-//        }
-//        for (Couple key : freqMap.keySet()) {
-//            int frequency = freqMap.get(key);
-//            if (bucket[frequency] == null) {
-//                bucket[frequency] = new ArrayList<>();
-//            }
-//            bucket[frequency].add(key);
-//        }
-//        List<Couple> res = new ArrayList<>();
-//        for (int i = bucket.length - 1; i >= 0; i--) {
-//            if (bucket[i] != null) {
-//                res.addAll(bucket[i]);
-//            }
-//        }
-//        return res;
-//    }
 
 }
 

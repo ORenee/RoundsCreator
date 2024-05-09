@@ -1,24 +1,18 @@
-1,Cha Cha,Renee Olds,Katie Sjobeck,Ethan Shafer,Ava Balciunas,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa
-2,Rumba,Renee Olds,Katie Sjobeck,Ethan Shafer,Ava Balciunas,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa
-3,Swing,Renee Olds,Katie Sjobeck,Ethan Shafer,Ava Balciunas,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa
-4,Cha Cha,Lydia Thiel,Theresa Beck,Charles Wehling,Atlas Wolf,,,,
-5,Rumba,Caroline Bird,Sam Rohe,Noah Kevan,Theresa Beck,,,,
-6,Swing,Noah Kevan,Theresa Beck,,,,,,
-7,Cha Cha,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,,,,
-8,Rumba,Katie Sjobeck,Kate Hoff,Charles Wehling,Ava Balciunas,,,,
-9,Swing,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,Charles Wehling,Ava Balciunas,,
-10,Cha Cha,Ethan Shafer,Lydia Thiel,,,,,,
-11,Rumba,Ethan Shafer,Lydia Thiel,,,,,,
-12,Swing,Ethan Shafer,Lydia Thiel,,,,,,
-13,Waltz,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa
-14,Tango,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa
-15,Foxtrot,Katie Sjobeck,Kate Hoff,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa,,
-16,Waltz,Ethan Shafer,Ava Balciunas,Caroline Bird,Sam Rohe,Noah Kevan,Theresa Beck,Charles Wehling,Atlas Wolf
-17,Tango,Ethan Shafer,Ava Balciunas,Noah Kevan,Theresa Beck,Charles Wehling,Atlas Wolf,,
-18,Foxtrot,Ethan Shafer,Ava Balciunas,Noah Kevan,Theresa Beck,Charles Wehling,Atlas Wolf,,
-19,Waltz,,,,,,,,
-20,Tango,,,,,,,,
-21,Foxtrot,,,,,,,,
-22,Waltz,Ethan Shafer,Lydia Thiel,,,,,,
-23,Tango,Ethan Shafer,Lydia Thiel,,,,,,
-24,Foxtrot,Ethan Shafer,Lydia Thiel,,,,,,
+1,Cha Cha,Lydia Thiel,Theresa Beck,Ethan Shafer,Ava Balciunas,Renee Olds,Katie Sjobeck,,
+2,Rumba,Noah Kevan,Theresa Beck,Ethan Shafer,Ava Balciunas,Renee Olds,Katie Sjobeck,,
+3,Swing,Noah Kevan,Theresa Beck,Ethan Shafer,Ava Balciunas,Renee Olds,Katie Sjobeck,,
+4,Cha Cha,Charles Wehling,Atlas Wolf,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa,,
+5,Rumba,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa,Caroline Bird,Sam Rohe,,
+7,Cha Cha,Renee Olds,Sammi Records,Ethan Shafer,Lydia Thiel,Katie Sjobeck,Kate Hoff,,
+8,Rumba,Charles Wehling,Ava Balciunas,Ethan Shafer,Lydia Thiel,Katie Sjobeck,Kate Hoff,,
+9,Swing,Charles Wehling,Ava Balciunas,Renee Olds,Sammi Records,Ethan Shafer,Lydia Thiel,Katie Sjobeck,Kate Hoff
+10,Waltz,Noah Kevan,Theresa Beck,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa,,
+11,Tango,Noah Kevan,Theresa Beck,Elliot Kapel,Emily Marchetti,Jack Righeimer,Lucy Juncosa,,
+12,Foxtrot,Noah Kevan,Theresa Beck,,,,,,
+13,Waltz,Ethan Shafer,Lydia Thiel,Caroline Bird,Sam Rohe,Charles Wehling,Atlas Wolf,,
+14,Tango,Ethan Shafer,Lydia Thiel,Charles Wehling,Atlas Wolf,,,,
+15,Foxtrot,Ethan Shafer,Lydia Thiel,Charles Wehling,Atlas Wolf,,,,
+16,Waltz,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,,,,
+17,Tango,Renee Olds,Sammi Records,Katie Sjobeck,Kate Hoff,Ethan Shafer,Ava Balciunas,,
+18,Foxtrot,Katie Sjobeck,Kate Hoff,Ethan Shafer,Ava Balciunas,,,,
+19,Waltz,Ethan Shafer,Ava Balciunas,,,,,,

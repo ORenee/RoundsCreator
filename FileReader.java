@@ -37,10 +37,8 @@ public class FileReader {
                 // the file, using a comma as the delimiter
                 String[] attributes = line.split(",");
 
-                Couple couple = createCouple(attributes);
+                Couple couple = createCouple(attributes, couples.size());
 
-                // adding couple into ArrayList and count how many couples a person is in
-                IndividualTracker.trackCouple(couple, couples.size());
                 couples.add(couple);
 
 
@@ -56,7 +54,7 @@ public class FileReader {
         return couples;
     }
 
-    private static Couple createCouple(String[] metadata) {
+    private static Couple createCouple(String[] metadata, int id) {
         String lead = metadata[0]; // lead name
         String follow = metadata[1]; // follow name
         List<Dance> dances = new ArrayList<>();
@@ -82,7 +80,7 @@ public class FileReader {
             dances.add(Dance.SWING);
         }
 
-        return new Couple(lead, follow, dances);
+        return new Couple(lead, follow, dances, id);
     }
 
 }
