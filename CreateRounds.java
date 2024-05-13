@@ -42,6 +42,9 @@ public class CreateRounds {
 
         for (int i = 1; i <= rounds.size(); ++i) {
 
+            if(rounds.get(i - 1).requireBreakBefore){
+                System.out.println("Required Break\n");
+            }
             System.out.println("Round " + i);
             rounds.get(i - 1).print();
         }
@@ -123,6 +126,7 @@ public class CreateRounds {
 
         //--- Remove single couples and heats with no dancers ----
 
+        // start at the end because any rounds with a single couple will be added to the previous round
         for (int i = rounds.size(); i > 0; --i) {
             Round current = rounds.get(i - 1);
             // TODO: create indicator that a break is required if a couple is moved to a previous round
@@ -131,6 +135,8 @@ public class CreateRounds {
             if(current.isEmpty()){
                 rounds.remove(current);
             }
+
+            current.removeEmptyDances();
 
             // if a round has dances where there is 1 person on the floor,
             // add this round to the previous r
@@ -141,13 +147,15 @@ public class CreateRounds {
                 if(i > 1 && rounds.get(i-2).style == current.style){
                     // add this round to previous round
                     Round result = rounds.get(i - 2).addToRoundWhereOnlyOneCouple(current);
+                    rounds.get(i - 2).requireBreakBefore = true;
                     if(result != null){
                         rounds.set(rounds.indexOf(current), result);
+                    } else { // result is null so the current round is now empty
+                        rounds.remove(current);
                     }
                 }
             }
 
-            current.removeEmptyDances();
         }
 
     }

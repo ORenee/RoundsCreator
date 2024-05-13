@@ -7,11 +7,12 @@ public class StyleManager {
     private int numLatin;
     private int numSmooth;
 
+    // TODO: changing defaults to full dances breaks everything
     private StyleManager(){
-        numRhythm = 3;
+        numRhythm = 5;
         numStandard = 5;
         numLatin = 5;
-        numSmooth = 3;
+        numSmooth = 4;
     };
 
     // implementation of singleton

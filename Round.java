@@ -14,6 +14,8 @@ public class Round {
     int maxOnfloor;
     int minOnFloor;
 
+    boolean requireBreakBefore = false;
+
     Round(Style style){
         maxOnfloor = CreateRounds.MAX_ON_FLOOR;
         minOnFloor = CreateRounds.SOFT_MAX;
@@ -33,8 +35,8 @@ public class Round {
                 dance1 = new Heat(Dance.CHACHA);
                 dance2 = new Heat(Dance.RUMBA);
                 dance3 = new Heat(Dance.SWING);
-                dance4 = numberOfDances > 3 ? new Heat(Dance.MAMBO) : null;
-                dance5 = numberOfDances > 4 ? new Heat(Dance.SWING) : null;
+                dance4 = numberOfDances > 3 ? new Heat(Dance.BOLERO) : null;
+                dance5 = numberOfDances > 4 ? new Heat(Dance.MAMBO) : null;
                 break;
             case STANDARD:
                 dance1 = new Heat(Dance.SWALTZ);
@@ -330,9 +332,26 @@ public class Round {
 
     }
 
+    /**
+     * get the least number of couples on the floor in this round
+     * The result does not take into account null rounds
+     * @return
+     */
     public int getLeastOnFloor(){
 
-        int min = Math.min(Math.min(dance1.getCouples().size(), dance2.getCouples().size()), dance3.getCouples().size());
+        int min = Integer.MAX_VALUE;
+
+        if(dance1 != null) {
+            min = Math.min(min, dance1.getCouples().size());
+        }
+
+        if(dance2 != null) {
+            min = Math.min(min, dance2.getCouples().size());
+        }
+
+        if(dance3 != null) {
+            min = Math.min(min, dance3.getCouples().size());
+        }
 
         if(dance4 != null) {
             min = Math.min(min, dance4.getCouples().size());
@@ -346,51 +365,64 @@ public class Round {
     }
 
     /**
-     * NewRound and this round MUST BE THE SAME STYLE WITH THE SAME NUMBER OF DANCES
+     * Add to this round any heats that only have one couple
+     * NewRound and this round must be the same round
      * @param newRound
+     * @return the inputted round after having the singletons removed
+     *      if newRound is empty, returns null.
      */
     public Round addToRoundWhereOnlyOneCouple(Round newRound){
         if(style != newRound.style){
             System.err.println("Trying to add a round with different types");
-            return null;
+            return newRound;
         }
-        if(dance1 == null) {
+        if(newRound.dance1 != null) {
             if (newRound.dance1.getCouples().size() == 1 && this.dance1.getCouples().size() < maxOnfloor) {
                 dance1.addCouples(newRound.dance1.getCouples());
                 newRound.removeDance(dance1.getDance());
             }
         }
-        if(dance2 != null) {
+        if(newRound.dance2 != null) {
             if (newRound.dance2.getCouples().size() == 1 && this.dance2.getCouples().size() < maxOnfloor) {
                 dance2.addCouples(newRound.dance2.getCouples());
                 newRound.removeDance(dance2.getDance());
             }
         }
-        if(dance3 != null) {
+        if(newRound.dance3 != null) {
             if (newRound.dance3.getCouples().size() == 1 && this.dance3.getCouples().size() < maxOnfloor) {
                 dance3.addCouples(newRound.dance3.getCouples());
                 newRound.removeDance(dance3.getDance());
             }
         }
-        if(dance4 != null){
+        if(newRound.dance4 != null){
             if(newRound.dance4.getCouples().size() == 1 && this.dance4.getCouples().size() < maxOnfloor){
                 dance4.addCouples(newRound.dance4.getCouples());
                 newRound.removeDance(dance4.getDance());
             }
         }
-        if(dance5 != null){
+        if(newRound.dance5 != null){
             if(newRound.dance5.getCouples().size() == 1 && this.dance5.getCouples().size() < maxOnfloor){
                 dance5.addCouples(newRound.dance5.getCouples());
                 newRound.removeDance(dance5.getDance());
             }
         }
-        return newRound;
+        return newRound.isEmpty() ? null : newRound;
     }
 
+    /**
+     * @return true if there are 0 couples in every heat
+     */
     public boolean isEmpty(){
-        boolean dancesEmpty = dance1.getCouples().isEmpty()
-                && dance2.getCouples().isEmpty()
-                && dance3.getCouples().isEmpty();
+        boolean dancesEmpty = true;
+        if(dance1 != null){
+            dancesEmpty = dancesEmpty && dance1.getCouples().isEmpty();
+        }
+        if(dance2 != null){
+            dancesEmpty = dancesEmpty && dance2.getCouples().isEmpty();
+        }
+        if(dance3 != null){
+            dancesEmpty = dancesEmpty && dance3.getCouples().isEmpty();
+        }
         if(dance4 != null){
             dancesEmpty = dancesEmpty && dance4.getCouples().isEmpty();
         }
