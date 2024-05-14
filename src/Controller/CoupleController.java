@@ -31,24 +31,21 @@ public class CoupleController {
             String leadname = this.form.getFirstname().trim();
             String followname = this.form.getLastname().trim();
 
-            List<Dance> dances = new ArrayList<>();
-            if(this.form.getChaCha()) { dances.add(Dance.CHACHA); }
-            if(this.form.getRumba()) { dances.add(Dance.RUMBA); }
-            if(this.form.getSwing()) { dances.add(Dance.SWING); }
-            if(this.form.getBolero()) { dances.add(Dance.BOLERO); }
-            if(this.form.getMambo()) { dances.add(Dance.MAMBO); }
+            List<Dance> dances = createDancesList();
 
             // simple validations
             if(leadname.isEmpty()) {
-                JOptionPane.showMessageDialog(this.form, "Lead Name Required.", "Error",
+                JOptionPane.showMessageDialog(this.form, "Lead required.", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             } else if(followname.isEmpty()) {
-                JOptionPane.showMessageDialog(this.form, "Follow Name Required.", "Error",
+                JOptionPane.showMessageDialog(this.form, "Follow required.", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
+            } else if(dances.isEmpty()){
+                JOptionPane.showMessageDialog(this.form, "Please select at lease one dance.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
-
 
             this.database.addCouple(leadname, followname, dances);
             this.database.saveUser(new File(databaseFile));
@@ -65,5 +62,33 @@ public class CoupleController {
             this.viewResults.setRounds(CreateRounds.getRounds(this.database.loadUsers(new File(databaseFile))));
         });
 
+    }
+
+    private List<Dance> createDancesList(){
+        List<Dance> dances = new ArrayList<>();
+        if(this.form.getChaCha()) { dances.add(Dance.CHACHA); }
+        if(this.form.getRumba()) { dances.add(Dance.RUMBA); }
+        if(this.form.getSwing()) { dances.add(Dance.SWING); }
+        if(this.form.getBolero()) { dances.add(Dance.BOLERO); }
+        if(this.form.getMambo()) { dances.add(Dance.MAMBO); }
+
+        if(this.form.getWaltz()) { dances.add(Dance.WALTZ); }
+        if(this.form.getTango()) { dances.add(Dance.TANGO); }
+        if(this.form.getFoxtrot()) { dances.add(Dance.FOXTROT); }
+        if(this.form.getViennese()) { dances.add(Dance.VIENNESE); }
+
+        if(this.form.getLatinCha()) { dances.add(Dance.LCHACHA); }
+        if(this.form.getSamba()) { dances.add(Dance.SAMBA); }
+        if(this.form.getLatinRumba()) { dances.add(Dance.LRUMBA); }
+        if(this.form.getPaso()) { dances.add(Dance.PASODOBLE); }
+        if(this.form.getJive()) { dances.add(Dance.JIVE); }
+
+        if(this.form.getStandardWaltz()) { dances.add(Dance.SWALTZ); }
+        if(this.form.getStandardTango()) { dances.add(Dance.STANGO); }
+        if(this.form.getStandardViennese()) { dances.add(Dance.SVIENNESE); }
+        if(this.form.getStandardFoxtrot()) { dances.add(Dance.SFOXTROT); }
+        if(this.form.getQuickstep()) { dances.add(Dance.SQUICKSTEP); }
+
+        return dances;
     }
 }

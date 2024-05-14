@@ -57,21 +57,21 @@ public enum Dance {
             case VIENNESE:
                 return "Viennese Waltz";
             case SWALTZ:
-                return "Waltz"; 
+                return "Standard Waltz";
             case SFOXTROT:
-                return "Foxtrot";
+                return "Standard Foxtrot";
             case SVIENNESE:
-                return "Viennese Waltz";
+                return "Standard Viennese Waltz";
             case STANGO:
-                return "Tango";
+                return " Standard Tango";
             case SQUICKSTEP:     
                 return "Quickstep";
             case LCHACHA:
-                return "Cha Cha";
+                return "Latin Cha Cha";
             case SAMBA:
                 return "Samba";
             case LRUMBA:
-                return "Rumba";
+                return "Latin Rumba";
             case PASODOBLE:
                 return "Paso Doble";
             case JIVE:

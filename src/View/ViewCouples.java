@@ -5,8 +5,12 @@ import Model.Dance;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,13 +27,18 @@ public class ViewCouples extends JPanel {
     // create rounds button
     private JButton createRoundsButton;
 
+
     public ViewCouples() {
         // uses box layout
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         // toolbar for buttons
         JToolBar toolBar = new JToolBar();
         userTable = new JTable();
-        userTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        userTable.setDefaultEditor(Object.class, null);
+        userTable.setRowHeight(20);
+        userTable.setIntercellSpacing(new Dimension(10,2));
+
+
         // scroll bar for table
         JScrollPane userTableScroll = new JScrollPane(userTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -60,6 +69,9 @@ public class ViewCouples extends JPanel {
 
             defaultTableModel.addRow(row);
         }
+
+        resizeColumnWidth(20, 20, 60);
+        userTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
 
     // event listener for back button
@@ -71,4 +83,23 @@ public class ViewCouples extends JPanel {
     public void createRoundsButton(ActionListener actionListener) {
         createRoundsButton.addActionListener(actionListener);
     }
+
+    private void resizeColumnWidth(double... percentages) {
+        final TableColumnModel columnModel = userTable.getColumnModel();
+        int totalWidth = getToolkit().getScreenSize().width - 350;
+        double total = Arrays.stream(percentages).sum();
+
+        for (int column = 0; column < userTable.getColumnCount(); column++) {
+            int width = (int)(totalWidth * (percentages[column] / total)); // Min width based on percentage
+            for (int row = 0; row < userTable.getRowCount(); row++) {
+                TableCellRenderer renderer = userTable.getCellRenderer(row, column);
+                Component comp = userTable.prepareRenderer(renderer, row, column);
+                width = Math.max(comp.getPreferredSize().width +1 , width);
+            }
+            if(width > totalWidth)
+                width=totalWidth;
+            columnModel.getColumn(column).setPreferredWidth(width);
+        }
+    }
+
 }
