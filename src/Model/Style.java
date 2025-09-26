@@ -16,5 +16,4 @@ public enum Style{
             this.value = value;
     }
 
-
 }

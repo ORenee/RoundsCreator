@@ -64,6 +64,10 @@ public class CoupleController {
 
     }
 
+//    public deleteCoupleAt(int index){
+//        this.database.
+//    }
+
     private List<Dance> createDancesList(){
         List<Dance> dances = new ArrayList<>();
         if(this.form.getChaCha()) { dances.add(Dance.CHACHA); }

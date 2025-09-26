@@ -10,7 +10,7 @@ public class Database {
 
     // Data in file is always listed in
     // Heat number, Lead, Follow,
-    // Rhythm dances in order as Xs, Smooth in order, Latin in order, Standard in order
+    // Rhythm dances in order as TRUE/FALSE, Smooth in order, Latin in order, Standard in order
 
     public Database() {
         coupleArrayList = new ArrayList<>();
@@ -82,34 +82,64 @@ public class Database {
         return null;
     }
 
+//    public boolean deleteCouple(int id, File file){
+//        try {
+//            BufferedReader bufferedReader = new BufferedReader(new java.io.FileReader(file));
+//            String line = bufferedReader.readLine();
+//
+//            List<String> data = new ArrayList<>();
+//            // loop until all lines are read
+//            while (line != null) {
+//
+//                // use string.split to load a string array with the values from
+//                // each line of
+//                // the file, using a comma as the delimiter
+//                if(!line.contains(id + "")){
+//                    data.add(line);
+//                }
+//
+//                // read next line before looping
+//                // if end of file reached, line would be null
+//                line = bufferedReader.readLine();
+//            }
+//            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, false));
+//            bufferedWriter.write(data);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        return true;
+//    }
+
     private String setDancesForDB(List<Dance> dances){
         String save_data = "";
         // rhythm
-        save_data += dances.contains(Dance.CHACHA) ? ",X" : ",";
-        save_data += dances.contains(Dance.RUMBA) ? ",X" : ",";
-        save_data += dances.contains(Dance.SWING) ? ",X" : ",";
-        save_data += dances.contains(Dance.BOLERO) ? ",X" : ",";
-        save_data += dances.contains(Dance.MAMBO) ? ",X" : ",";
+        save_data += dances.contains(Dance.CHACHA) + ",";
+        save_data += dances.contains(Dance.RUMBA) + ",";
+        save_data += dances.contains(Dance.SWING) + ",";
+        save_data += dances.contains(Dance.BOLERO) +",";
+        save_data += dances.contains(Dance.MAMBO) + ",";
 
         // smooth
-        save_data += dances.contains(Dance.WALTZ) ? ",X" : ",";
-        save_data += dances.contains(Dance.TANGO) ? ",X" : ",";
-        save_data += dances.contains(Dance.FOXTROT) ? ",X" : ",";
-        save_data += dances.contains(Dance.VIENNESE) ? ",X" : ",";
+        save_data += dances.contains(Dance.WALTZ) + ",";
+        save_data += dances.contains(Dance.TANGO) + ",";
+        save_data += dances.contains(Dance.FOXTROT) + ",";
+        save_data += dances.contains(Dance.VIENNESE) + ",";
 
         // latin
-        save_data += dances.contains(Dance.LCHACHA) ? ",X" : ",";
-        save_data += dances.contains(Dance.SAMBA) ? ",X" : ",";
-        save_data += dances.contains(Dance.LRUMBA) ? ",X" : ",";
-        save_data += dances.contains(Dance.PASODOBLE) ? ",X" : ",";
-        save_data += dances.contains(Dance.JIVE) ? ",X" : ",";
+        save_data += dances.contains(Dance.LCHACHA) + ",";
+        save_data += dances.contains(Dance.SAMBA) + ",";
+        save_data += dances.contains(Dance.LRUMBA) + ",";
+        save_data += dances.contains(Dance.PASODOBLE) + ",";
+        save_data += dances.contains(Dance.JIVE) + ",";
 
         // standard
-        save_data += dances.contains(Dance.SWALTZ) ? ",X" : ",";
-        save_data += dances.contains(Dance.STANGO) ? ",X" : ",";
-        save_data += dances.contains(Dance.SVIENNESE) ? ",X" : ",";
-        save_data += dances.contains(Dance.SFOXTROT) ? ",X" : ",";
-        save_data += dances.contains(Dance.SQUICKSTEP) ? ",X" : ",";
+        save_data += dances.contains(Dance.SWALTZ) + ",";
+        save_data += dances.contains(Dance.STANGO) + ",";
+        save_data += dances.contains(Dance.SVIENNESE) + ",";
+        save_data += dances.contains(Dance.SFOXTROT) + ",";
+        save_data += dances.contains(Dance.SQUICKSTEP) + ",";
 
         return save_data;
     }
@@ -121,74 +151,74 @@ public class Database {
         List<Dance> dances = new ArrayList<>();
 
         // starting at [3], dances are listed rhythm, smooth, latin, standard
-        // if there is an X there, this couple is dancing that dance
+        // if there is TRUE there, this couple is dancing that dance
 
         // the length of the data should always be as much as we need
         // but if the user inputs a badly formatted csv, we need to make
         // sure there are no out of bounds errors
 
         // rhythm
-        if(metadata.length > 3 && metadata[3].equals("X")){
+        if(metadata.length > 3 && metadata[3].equals("TRUE")){
             dances.add(Dance.CHACHA);
         }
-        if(metadata.length > 4 && metadata[4].equals("X")){
+        if(metadata.length > 4 && metadata[4].equals("TRUE")){
             dances.add(Dance.RUMBA);
         }
-        if(metadata.length > 5 && metadata[5].equals("X")){
+        if(metadata.length > 5 && metadata[5].equals("TRUE")){
             dances.add(Dance.SWING);
         }
-        if(metadata.length > 6 && metadata[6].equals("X")){
+        if(metadata.length > 6 && metadata[6].equals("TRUE")){
             dances.add(Dance.BOLERO);
         }
-        if(metadata.length > 7 && metadata[7].equals("X")){
+        if(metadata.length > 7 && metadata[7].equals("TRUE")){
             dances.add(Dance.MAMBO);
         }
 
         // smooth
-        if(metadata.length > 8 && metadata[8].equals("X")){
+        if(metadata.length > 8 && metadata[8].equals("TRUE")){
             dances.add(Dance.WALTZ);
         }
-        if(metadata.length > 9 && metadata[9].equals("X")){
+        if(metadata.length > 9 && metadata[9].equals("TRUE")){
             dances.add(Dance.TANGO);
         }
-        if(metadata.length > 10 && metadata[10].equals("X")){
+        if(metadata.length > 10 && metadata[10].equals("TRUE")){
             dances.add(Dance.FOXTROT);
         }
-        if(metadata.length > 11 && metadata[11].equals("X")){
+        if(metadata.length > 11 && metadata[11].equals("TRUE")){
             dances.add(Dance.VIENNESE);
         }
 
         // latin
-        if(metadata.length > 12 && metadata[12].equals("X")){
+        if(metadata.length > 12 && metadata[12].equals("TRUE")){
             dances.add(Dance.LCHACHA);
         }
-        if(metadata.length > 13 && metadata[13].equals("X")){
+        if(metadata.length > 13 && metadata[13].equals("TRUE")){
             dances.add(Dance.SAMBA);
         }
-        if(metadata.length > 14 && metadata[14].equals("X")){
+        if(metadata.length > 14 && metadata[14].equals("TRUE")){
             dances.add(Dance.LRUMBA);
         }
-        if(metadata.length > 15 && metadata[15].equals("X")){
+        if(metadata.length > 15 && metadata[15].equals("TRUE")){
             dances.add(Dance.PASODOBLE);
         }
-        if(metadata.length > 16 && metadata[16].equals("X")){
+        if(metadata.length > 16 && metadata[16].equals("TRUE")){
             dances.add(Dance.JIVE);
         }
 
         // standard
-        if(metadata.length > 17 && metadata[17].equals("X")){
+        if(metadata.length > 17 && metadata[17].equals("TRUE")){
             dances.add(Dance.SWALTZ);
         }
-        if(metadata.length > 18 && metadata[18].equals("X")){
+        if(metadata.length > 18 && metadata[18].equals("TRUE")){
             dances.add(Dance.STANGO);
         }
-        if(metadata.length > 19 && metadata[19].equals("X")){
+        if(metadata.length > 19 && metadata[19].equals("TRUE")){
             dances.add(Dance.SVIENNESE);
         }
-        if(metadata.length > 20 && metadata[20].equals("X")){
+        if(metadata.length > 20 && metadata[20].equals("TRUE")){
             dances.add(Dance.SFOXTROT);
         }
-        if(metadata.length > 21 && metadata[21].equals("X")){
+        if(metadata.length > 21 && metadata[21].equals("TRUE")){
             dances.add(Dance.SQUICKSTEP);
         }
 

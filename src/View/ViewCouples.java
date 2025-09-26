@@ -4,6 +4,8 @@ import Model.Couple;
 import Model.Dance;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class ViewCouples extends JPanel {
 
     // Table for user data
+    private DefaultTableModel defaultTableModel;
     private JTable userTable;
     // table column
     private String[] userTableColumn = {"LEAD NAME", "FOLLOW NAME", "DANCES"};
@@ -36,8 +39,7 @@ public class ViewCouples extends JPanel {
         userTable = new JTable();
         userTable.setDefaultEditor(Object.class, null);
         userTable.setRowHeight(20);
-        userTable.setIntercellSpacing(new Dimension(10,2));
-
+        userTable.setRowSelectionAllowed(true);
 
         // scroll bar for table
         JScrollPane userTableScroll = new JScrollPane(userTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -54,7 +56,7 @@ public class ViewCouples extends JPanel {
 
     // gets couples from database and loads to table
     public void getCouples(List<Couple> couples) {
-        DefaultTableModel defaultTableModel = (DefaultTableModel) userTable.getModel();
+        defaultTableModel = (DefaultTableModel) userTable.getModel();
         defaultTableModel.setColumnIdentifiers(userTableColumn);
         defaultTableModel.setRowCount(0); // remove current rows to get new data
 
@@ -71,7 +73,8 @@ public class ViewCouples extends JPanel {
         }
 
         resizeColumnWidth(20, 20, 60);
-        userTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//        userTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        userTable.getColumnModel().getColumn(2).setCellRenderer(new WordWrapCellRenderer());
     }
 
     // event listener for back button
@@ -82,6 +85,11 @@ public class ViewCouples extends JPanel {
     // event listener for create rounds button
     public void createRoundsButton(ActionListener actionListener) {
         createRoundsButton.addActionListener(actionListener);
+    }
+
+    public void editCouple(ListSelectionListener actionListener) {
+        ListSelectionModel selectionModel = userTable.getSelectionModel();
+        selectionModel.addListSelectionListener(actionListener);
     }
 
     private void resizeColumnWidth(double... percentages) {

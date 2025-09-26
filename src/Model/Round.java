@@ -17,6 +17,8 @@ public class Round {
     int maxOnfloor;
     int minOnFloor;
 
+    RoundInfo roundInfo;
+
     boolean requireBreakBefore = false;
 
     Round(Style style){
@@ -28,6 +30,7 @@ public class Round {
 
         fillHeatsforRound();
 
+        roundInfo = new RoundInfo(style);
     }
 
     private void fillHeatsforRound(){
@@ -178,6 +181,7 @@ public class Round {
             dance5.addCouple(couple);
         }
 
+        roundInfo.addCouple(couple);
         return true; // success
     }
 

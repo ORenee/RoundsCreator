@@ -12,9 +12,9 @@ public class CreateRounds {
     private Database database = new Database();
 
     // specifies how many couples can be on the floor at once
-    public static final int MAX_ON_FLOOR = 4;
+    public static final int MAX_ON_FLOOR = 3;
     // specifies the minimum number of couples on the floor. Must be less than or equal to max
-    public static int SOFT_MAX = 3;
+    public static int SOFT_MAX = 2;
     //!! if min and max are the same number, not dancing consecutive rounds is not guaranteed !!
 
     public static final boolean BALANCED_HEATS = false;
@@ -25,7 +25,8 @@ public class CreateRounds {
     public static List<Round> getRounds(List<Couple> couples){
         // only run algo again if it hasn't been run before or the user wants to redo it
         if(rounds == null){
-            createRounds(couples);
+            rounds = CreateRoundsSimple.createRounds(couples);
+            //createRounds(couples);
         }
         return rounds;
     }
@@ -33,6 +34,7 @@ public class CreateRounds {
     // -- PRINT RESULTS -- for testing only
     public static void printRounds(List<Couple> couples){
         if(rounds == null){
+            rounds = CreateRoundsSimple.createRounds(couples);
             createRounds(couples);
         }
 
@@ -72,13 +74,13 @@ public class CreateRounds {
 
         rounds = new ArrayList<>();
 
-        //---- CREATE SMOOTH ROUNDS ----
+        //---- CREATE RHYTHM ROUNDS ----
 
         currentStyle = Style.RHYTHM;
         rounds.add(new Round(currentStyle));
 
         // get all the couples dancing rhythm
-        List<Couple> rhythmCouples = couples;
+        List<Couple> rhythmCouples = new ArrayList<>(couples);
         rhythmCouples.removeIf(x -> (!x.dancesRhythm()));
 
         rhythmCouples = IndividualTracker.sortCouplesByOccurances(rhythmCouples);
@@ -104,7 +106,7 @@ public class CreateRounds {
         rounds.add(new Round(currentStyle));
 
         // get all the couples dancing rhythm
-        List<Couple> smoothCouples = couples;
+        List<Couple> smoothCouples = new ArrayList<>(couples);
         smoothCouples.removeIf(x -> (!x.dancesSmooth()));
 
         smoothCouples = IndividualTracker.sortCouplesByOccurances(smoothCouples);
