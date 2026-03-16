@@ -1,5 +1,6 @@
+This project automatically creates showcase and competition schedules based on registered dancers and events.
 
-BROKEN THINGS - DO NOT USE
+WIP/BROKEN
  -
 - Manually adding couples
 - Latin Dances/Rounds
